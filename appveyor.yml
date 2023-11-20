@@ -1,6 +1,5 @@
 image:
 - Visual Studio 2019
-- Ubuntu
 
 skip_branch_with_pr: true
 stack: python 3.11
@@ -21,9 +20,6 @@ deploy:
   on:
     APPVEYOR_REPO_TAG: true
 
-#
-#   Windows package
-# 
 for:
 -
   matrix:
@@ -35,17 +31,3 @@ for:
 
   artifacts:
   - path: counter-windows.zip
-
-#
-#   Linux package
-# 
--
-  matrix:
-    only:
-    - image: Ubuntu
-
-  after_build:
-  - tar -czvf counter-linux.tar.gz -C dist counter
-
-  artifacts:
-  - path: counter-linux.tar.gz

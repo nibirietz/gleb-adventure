@@ -11,7 +11,9 @@ if platform == "linux":
 else:
     JSON_FILE = "windows.json"
     urllib.request.urlretrieve("https://raw.githubusercontent.com/nibirietz/gleb-adventure/main/windows.json", "windows.json")
-    
+
+urllib.request.urlretrieve("https://github.com/nibirietz/gleb-adventure/blob/95545e0b738eccb5cb6cf70bdbc33c0626853211/yurta.png")
+
 
 class MainWindow:
     def __init__(self):
