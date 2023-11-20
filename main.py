@@ -16,20 +16,26 @@ class MainWindow:
     def main_loop(self, page: flet.Page):
         self.page = page
         self.page.title = "Приключение Глёбы"
-        self.dialogue = Dialogue(self)
+        self.dialogue = Script(self)
         self.question_text = flet.Text(self.dialogue.question)
         self.answers_button = flet.Row([flet.ElevatedButton(text=answer, on_click=self.dialogue.call_question) for answer in self.dialogue.answers])
         self.page.add(flet.Image(src="yurta.png", width=400, height=400), self.question_text, self.answers_button)
 
     def update_view(self, question, answers):
+        """
+        Обновляет вид, меняя вопрос и ответы на новые.
+        """
         self.page.remove(self.question_text, self.answers_button)
         self.question_text = flet.Text(question)
         self.answers_button = flet.Row([flet.ElevatedButton(text=answer, on_click=self.dialogue.call_question) for answer in answers])
         self.page.add(self.question_text, self.answers_button)
 
 
-class Dialogue:
+class Script:
     def __init__(self, window: MainWindow):
+        """
+        Инициализирует сценарий с начального вопроса, в качестве параметра получает окно(пока что главное).
+        """
         self.window = window
         with open(JSON_FILE, "r") as f:
             self.data = json.load(f)
@@ -38,6 +44,9 @@ class Dialogue:
         self.answers = self.data[self.question]
 
     def call_question(self, arg):
+        """
+        Получает control. Достаёт со скрипта вопрос и его ответы.
+        """
         previuos_answer = arg.control.text
         if previuos_answer == "Выйти":
             self.window.page.window_destroy()
@@ -47,7 +56,6 @@ class Dialogue:
             self.answers = self.data[self.question]
             self.window.update_view(self.question, self.answers)
         except Exception:
-            print("ТЫ ДЕБИЛ, ПОЗДРАВЛЯЮ")
             self.window.update_view(previuos_answer, ["Выйти"])
             
 
