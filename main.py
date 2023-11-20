@@ -1,9 +1,10 @@
 import random
+from sys import platform
 import flet
 import json
-import os
 
-if os.uname().sysname == "Linux":
+
+if platform:
     JSON_FILE = "linux.json"
 else:
     JSON_FILE = "windows.json"
