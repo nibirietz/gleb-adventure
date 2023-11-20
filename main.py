@@ -2,15 +2,19 @@ import random
 from sys import platform
 import flet
 import json
+import urllib.request
 
 
-if platform:
+if platform == "linux":
     JSON_FILE = "linux.json"
+    urllib.request.urlretrieve("https://raw.githubusercontent.com/nibirietz/gleb-adventure/main/linux.json", "linux.json")
 else:
     JSON_FILE = "windows.json"
+    urllib.request.urlretrieve("https://raw.githubusercontent.com/nibirietz/gleb-adventure/main/windows.json", "windows.json")
+    
 
 class MainWindow:
-    def __init__(self) -> None:
+    def __init__(self):
         flet.app(target=self.main_loop)
 
     def main_loop(self, page: flet.Page):
