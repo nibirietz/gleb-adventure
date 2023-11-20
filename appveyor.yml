@@ -38,20 +38,6 @@ for:
   - path: counter-windows.zip
 
 #
-#   macOS package
-# 
--
-  matrix:
-    only:
-    - image: macOS
-
-  after_build:
-  - tar -czvf counter-macos.tar.gz -C dist counter.app
-
-  artifacts:
-  - path: counter-macos.tar.gz
-
-#
 #   Linux package
 # 
 -
