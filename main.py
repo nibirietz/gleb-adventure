@@ -2,17 +2,17 @@ import random
 from sys import platform
 import flet
 import json
-import urllib.request
+from urllib.request import urlretrieve
 
 
 if platform == "linux":
     JSON_FILE = "linux.json"
-    urllib.request.urlretrieve("https://raw.githubusercontent.com/nibirietz/gleb-adventure/main/linux.json", "linux.json")
+    urlretrieve("https://raw.githubusercontent.com/nibirietz/gleb-adventure/main/linux.json", "linux.json")
 else:
     JSON_FILE = "windows.json"
-    urllib.request.urlretrieve("https://raw.githubusercontent.com/nibirietz/gleb-adventure/main/windows.json", "windows.json")
+    urlretrieve("https://raw.githubusercontent.com/nibirietz/gleb-adventure/main/windows.json", "windows.json")
 
-urllib.request.urlretrieve("https://github.com/nibirietz/gleb-adventure/blob/95545e0b738eccb5cb6cf70bdbc33c0626853211/yurta.png")
+urlretrieve("https://github.com/nibirietz/gleb-adventure/blob/95545e0b738eccb5cb6cf70bdbc33c0626853211/yurta.png")
 
 
 class MainWindow:
