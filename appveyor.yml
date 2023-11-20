@@ -6,9 +6,6 @@ image:
 skip_branch_with_pr: true
 stack: python 3.11
 
-environment:
-  GITHUB_TOKEN:
-    secure: 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
 
 install:
 - pip install -r requirements.txt

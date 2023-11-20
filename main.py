@@ -1,6 +1,12 @@
 import random
 import flet
 import json
+import os
+
+if os.uname().sysname == "Linux":
+    JSON_FILE = "linux.json"
+else:
+    JSON_FILE = "windows.json"
 
 class MainWindow:
     def __init__(self) -> None:
@@ -24,7 +30,7 @@ class MainWindow:
 class Dialogue:
     def __init__(self, window: MainWindow):
         self.window = window
-        with open("default.json", "r") as f:
+        with open(JSON_FILE, "r") as f:
             self.data = json.load(f)
 
         self.question = next(iter(self.data))
@@ -35,9 +41,13 @@ class Dialogue:
         if previuos_answer == "Выйти":
             self.window.page.window_destroy()
             return
-        self.question = random.choice(self.data[previuos_answer])
-        self.answers = self.data[self.question]
-        self.window.update_view(self.question, self.answers)
+        try:
+            self.question = random.choice(self.data[previuos_answer])
+            self.answers = self.data[self.question]
+            self.window.update_view(self.question, self.answers)
+        except Exception:
+            print("ТЫ ДЕБИЛ, ПОЗДРАВЛЯЮ")
+            self.window.update_view(random.choice(self.data[previuos_answer]), ["Выйти"])
             
 
 def main():
