@@ -55,12 +55,15 @@ class Script:
         if previuos_answer == "Выйти":
             self.window.page.window_destroy()
             return
-        try:
+        if previuos_answer not in self.data:
+            self.window.update_view("Дальше бога нет.", ["Выйти"])
+        else:
             self.question = random.choice(self.data[previuos_answer])
-            self.answers = self.data[self.question]
-            self.window.update_view(self.question, self.answers)
-        except Exception:
-            self.window.update_view(previuos_answer, ["Выйти"])
+            try:
+                self.answers = self.data[self.question]
+                self.window.update_view(self.question, self.answers)
+            except Exception:
+                self.window.update_view(self.question, ["Выйти"])
             
 
 def main():
