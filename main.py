@@ -19,7 +19,7 @@ class MainWindow:
         self.dialogue = Dialogue(self)
         self.question_text = flet.Text(self.dialogue.question)
         self.answers_button = flet.Row([flet.ElevatedButton(text=answer, on_click=self.dialogue.call_question) for answer in self.dialogue.answers])
-        self.page.add(self.question_text, self.answers_button)
+        self.page.add(flet.Image(src="yurta.png", width=400, height=400), self.question_text, self.answers_button)
 
     def update_view(self, question, answers):
         self.page.remove(self.question_text, self.answers_button)
@@ -48,7 +48,7 @@ class Dialogue:
             self.window.update_view(self.question, self.answers)
         except Exception:
             print("ТЫ ДЕБИЛ, ПОЗДРАВЛЯЮ")
-            self.window.update_view(random.choice(self.data[previuos_answer]), ["Выйти"])
+            self.window.update_view(previuos_answer, ["Выйти"])
             
 
 def main():
