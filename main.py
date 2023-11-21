@@ -4,9 +4,11 @@ import json
 from urllib.request import urlretrieve
 
 
-JSON_FILE = "linux.json"
-urlretrieve("https://raw.githubusercontent.com/nibirietz/gleb-adventure/main/script.json", "script.json")
-
+JSON_FILE = "script.json"
+try:
+    urlretrieve("https://raw.githubusercontent.com/nibirietz/gleb-adventure/main/script.json", "script.json")
+except FileNotFoundError as e:
+    print(e)
 
 class MainWindow:
     def __init__(self):
