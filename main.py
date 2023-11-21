@@ -1,18 +1,11 @@
 import random
-from sys import platform
 import flet
 import json
 from urllib.request import urlretrieve
 
 
-if platform == "linux":
-    JSON_FILE = "linux.json"
-    urlretrieve("https://raw.githubusercontent.com/nibirietz/gleb-adventure/main/linux.json", "linux.json")
-else:
-    JSON_FILE = "windows.json"
-    urlretrieve("https://raw.githubusercontent.com/nibirietz/gleb-adventure/main/windows.json", "windows.json")
-
-urlretrieve("https://github.com/nibirietz/gleb-adventure/blob/95545e0b738eccb5cb6cf70bdbc33c0626853211/yurta.png")
+JSON_FILE = "linux.json"
+urlretrieve("https://raw.githubusercontent.com/nibirietz/gleb-adventure/main/script.json", "script.json")
 
 
 class MainWindow:
@@ -25,7 +18,7 @@ class MainWindow:
         self.dialogue = Script(self)
         self.question_text = flet.Text(self.dialogue.question)
         self.answers_button = flet.Row([flet.ElevatedButton(text=answer, on_click=self.dialogue.call_question) for answer in self.dialogue.answers])
-        self.page.add(flet.Image(src="yurta.png", width=400, height=400), self.question_text, self.answers_button)
+        self.page.add(self.question_text, self.answers_button)
 
     def update_view(self, question, answers):
         """
@@ -43,7 +36,7 @@ class Script:
         Инициализирует сценарий с начального вопроса, в качестве параметра получает окно(пока что главное).
         """
         self.window = window
-        with open(JSON_FILE, "r") as f:
+        with open(JSON_FILE, "r", encoding="utf") as f:
             self.data = json.load(f)
 
         self.question = next(iter(self.data))
