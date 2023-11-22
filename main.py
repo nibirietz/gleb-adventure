@@ -36,7 +36,7 @@ class MainWindow:
 class Script:
     def __init__(self, window: MainWindow):
         self.window = window
-        with open("data/script.csv") as csvfile:
+        with open("data/script.csv", encoding="utf-8") as csvfile:
             self.data = list(csv.DictReader(csvfile))
             print(self.data)
 
