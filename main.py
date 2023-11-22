@@ -12,7 +12,7 @@ class MainWindow:
         self.page = page
         self.page.title = "Когда плачут Глёбы"
         self.dialogue = Script(self)
-        self.question_text = flet.Text(self.dialogue.question)
+        self.question_text = flet.Text(self.dialogue.first_question)
         self.answers_button = flet.Row(
             [
                 flet.ElevatedButton(text=answer, on_click=self.dialogue.call_question)
@@ -41,7 +41,6 @@ class Script:
             print(self.data)
 
         self.first_question = self.data[0]["Вопрос"]
-        self.question = self.first_question
         self.desciption = self.data[0]["Описание"]
         self.answers = self.parse_question(self.data[0]["Ответы"])
 
@@ -54,6 +53,8 @@ class Script:
                     print(e)
 
     def parse_question(self, line: str) -> list[str]:
+        if line == "@":
+            return ["Выйти", "Начать заново"]
         return line.split("|")
 
     def call_question(self, arg):
