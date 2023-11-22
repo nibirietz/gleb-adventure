@@ -1,5 +1,5 @@
 import flet
-import json
+import csv
 from urllib.request import urlretrieve
 import sys
 
@@ -36,12 +36,14 @@ class MainWindow:
 class Script:
     def __init__(self, window: MainWindow):
         self.window = window
-        with open("data/script.json", "r", encoding="utf") as file:
-            self.data = json.load(file)
+        with open("data/script.csv") as csvfile:
+            self.data = list(csv.DictReader(csvfile))
+            print(self.data)
 
-        self.first_question = next(iter(self.data))
+        self.first_question = self.data[0]["Вопрос"]
         self.question = self.first_question
-        self.answers = self.data[self.question]
+        self.desciption = self.data[0]["Описание"]
+        self.answers = self.parse_question(self.data[0]["Ответы"])
 
     def download_files(self):
         if "test" not in sys.argv:
@@ -51,27 +53,30 @@ class Script:
                 except FileExistsError as e:
                     print(e)
 
+    def parse_question(self, line: str) -> list[str]:
+        return line.split("|")
+
     def call_question(self, arg):
-        """
-        self.data[0] - описание
-        self.data[1:] - ответы
-        """
         previous_answer = arg.control.text
-        if previous_answer == "Да и хрен с ним":
+        print(self.desciption, self.answers, previous_answer)
+        if previous_answer == "Выйти":
             self.window.page.window_destroy()
-        if previous_answer == "Начать заново":
-            self.question = self.first_question
-            self.answers = self.data[self.question]
-            self.window.update_view(self.question, self.answers)
             return
-        try:
-            self.question = self.data[previous_answer][0]
-            self.answers = self.data[previous_answer][1:]
-            self.window.update_view(self.question, self.answers)
-        except Exception:
-            self.window.update_view(
-                "Дальше бога нет.", ["Да и хрен с ним", "Начать заново"]
-            )
+        if previous_answer == "Начать заново":
+            self.desciption = self.first_question
+            self.answers = self.parse_question(self.data[0]["Ответы"])
+            self.window.update_view(self.desciption, self.answers)
+            return
+
+        for row in self.data:
+            print(row)
+            if row["Вопрос"] == previous_answer:
+                self.desciption = row["Описание"]
+                self.answers = self.parse_question(row["Ответы"])
+                self.window.update_view(self.desciption, self.answers)
+                return
+        else:
+            self.window.update_view("Дальше бога нет.", ["Выйти", "Начать заново"])
 
 
 def main():
